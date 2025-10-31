@@ -1,0 +1,89 @@
+# Trading Strategy Configuration
+# Parameters for scalping strategy and risk management
+
+scalping:
+  # Entry Conditions
+  entry_confidence: 0.70 # Minimum ensemble confidence for entry (70%)
+  entry_min_rsi: 35 # RSI must be above this for long entry (avoid oversold)
+  entry_max_rsi: 70 # RSI must be below this for long entry (avoid overbought)
+  entry_macd_bullish: true # Require bullish MACD for long entry
+  entry_volume_multiplier: 1.2 # Current volume must be > X times average volume
+
+  # Exit Conditions
+  exit_confidence: 0.65 # Minimum confidence for signal-based exit
+  profit_target_pct: 0.015 # 1.5% profit target (scalping)
+  stop_loss_pct: 0.010 # 1.0% stop loss
+  trailing_stop_pct: 0.008 # 0.8% trailing stop (activates after 0.5% profit)
+  trailing_stop_activation: 0.005 # Activate trailing stop after 0.5% profit
+
+  # Position Management
+  max_position_size: 0.10 # Maximum 10% of capital per trade
+  max_positions: 1 # Maximum concurrent positions
+  max_trades_per_hour: 5 # Rate limiting
+  min_trade_interval_seconds: 60 # Minimum 1 minute between trades
+
+  # Signal Filtering
+  min_signal_strength: 0.70 # Overall signal strength filter
+  require_indicator_confirmation: true # Require technical indicator agreement
+
+risk_management:
+  # Capital Management
+  initial_capital: 10000 # Starting capital (USD)
+  max_daily_loss_pct: 0.05 # Max 5% daily loss (circuit breaker)
+  max_drawdown_pct: 0.15 # Max 15% drawdown allowed
+
+  # Position Sizing
+  position_sizing_method: fixed # 'fixed', 'kelly', or 'risk_based'
+  kelly_fraction: 0.25 # Kelly Criterion fraction (conservative)
+  risk_per_trade_pct: 0.02 # Risk 2% of capital per trade
+
+  # Emergency Controls
+  emergency_exit_enabled: true # Enable emergency exit on extreme moves
+  emergency_exit_threshold: 0.03 # Exit all positions on 3% adverse move
+  max_consecutive_losses: 5 # Stop trading after X consecutive losses
+
+  # Fees and Slippage
+  trading_fee_pct: 0.001 # 0.1% trading fee (Binance maker/taker)
+  slippage_pct: 0.0005 # 0.05% estimated slippage
+
+backtesting:
+  # Backtesting Parameters
+  start_date: 2024-01-01 # Backtest start date
+  end_date: 2024-12-31 # Backtest end date
+  initial_capital: 10000 # Starting capital for backtest
+  commission: 0.001 # Commission per trade (0.1%)
+
+  # Performance Metrics
+  calculate_sharpe: true # Calculate Sharpe ratio
+  calculate_sortino: true # Calculate Sortino ratio
+  calculate_calmar: true # Calculate Calmar ratio
+  risk_free_rate: 0.02 # Annual risk-free rate (2%)
+
+data:
+  # Data Configuration
+  symbol: BTCUSDT # Trading symbol
+  timeframe: 1m # Timeframe (1m, 3m, 5m, 15m, 1h)
+  historical_days: 30 # Days of historical data for training
+  update_interval: 60 # Data update interval (seconds)
+
+  # Data Quality
+  min_candles_required: 1000 # Minimum candles needed before trading
+  max_missing_data_pct: 0.01 # Max 1% missing/invalid data allowed
+  outlier_detection: true # Enable outlier detection and filtering
+
+logging:
+  # Logging Configuration
+  level: INFO # DEBUG, INFO, WARNING, ERROR, CRITICAL
+  log_to_file: true # Enable file logging
+  log_file: logs/trading.log # Log file path
+  max_log_size_mb: 100 # Max log file size
+  backup_count: 5 # Number of backup log files
+
+notifications:
+  # Notification Settings (Future Implementation)
+  enabled: false # Enable notifications
+  email_enabled: false # Email notifications
+  telegram_enabled: false # Telegram notifications
+  notify_on_trade: true # Notify on trade execution
+  notify_on_error: true # Notify on errors
+  notify_on_daily_summary: true # Daily performance summary

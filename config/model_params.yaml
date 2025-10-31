@@ -1,0 +1,72 @@
+# Model Configuration Parameters
+# These parameters control the architecture and training of ML models
+
+lstm:
+  # LSTM Neural Network Parameters
+  units: 64 # Number of LSTM units per layer
+  layers: 2 # Number of stacked LSTM layers
+  dropout: 0.2 # Dropout rate for regularization
+  learning_rate: 0.001 # Adam optimizer learning rate
+  batch_size: 32 # Training batch size
+  epochs: 50 # Maximum training epochs
+  early_stopping_patience: 10 # Early stopping patience
+
+cnn:
+  # 1D CNN Parameters
+  filters: [32, 64, 128] # Number of filters per convolutional layer
+  kernel_size: 3 # Kernel size for convolutions
+  pool_size: 2 # Max pooling size
+  dropout: 0.3 # Dropout rate
+  learning_rate: 0.001 # Adam optimizer learning rate
+  batch_size: 32 # Training batch size
+  epochs: 50 # Maximum training epochs
+
+random_forest:
+  # Random Forest Classifier Parameters
+  n_estimators: 200 # Number of trees
+  max_depth: 15 # Maximum tree depth
+  min_samples_split: 5 # Minimum samples to split a node
+  min_samples_leaf: 2 # Minimum samples per leaf
+  max_features: sqrt # Number of features for best split
+  random_state: 42 # Random seed for reproducibility
+  n_jobs: -1 # Use all CPU cores
+
+xgboost:
+  # XGBoost Classifier Parameters
+  n_estimators: 300 # Number of boosting rounds
+  max_depth: 8 # Maximum tree depth
+  learning_rate: 0.05 # Boosting learning rate
+  subsample: 0.8 # Subsample ratio of training data
+  colsample_bytree: 0.8 # Subsample ratio of columns
+  gamma: 0.1 # Minimum loss reduction for split
+  reg_alpha: 0.1 # L1 regularization
+  reg_lambda: 1.0 # L2 regularization
+  random_state: 42 # Random seed
+  n_jobs: -1 # Use all CPU cores
+
+ensemble:
+  # Ensemble Model Parameters
+  weights:
+    lstm: 0.30 # Weight for LSTM predictions
+    cnn: 0.25 # Weight for CNN predictions
+    rf: 0.20 # Weight for Random Forest predictions
+    xgb: 0.25 # Weight for XGBoost predictions
+  voting: weighted # Voting strategy: 'weighted' or 'soft'
+  confidence_threshold: 0.70 # Minimum confidence for signal generation
+
+training:
+  # General Training Parameters
+  validation_split: 0.2 # Fraction of data for validation
+  test_split: 0.1 # Fraction of data for final testing
+  shuffle: true # Shuffle data before splitting
+  random_state: 42 # Random seed for reproducibility
+
+feature_engineering:
+  # Feature Engineering Parameters
+  lookback_period: 60 # Number of timesteps for sequence (1 hour = 60 minutes)
+  feature_scaling: standard # 'standard' or 'minmax'
+  label_threshold: 0.0005 # 0.05% price change threshold for labeling
+  label_classes: # Class labels
+    - DOWN # 0: Price decrease > threshold
+    - UP # 1: Price increase > threshold
+    - HOLD # 2: Price change within threshold
